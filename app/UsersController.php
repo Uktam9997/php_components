@@ -148,7 +148,7 @@ class UsersController
             header("Location: /users");
             exit;
         }
-        if (file_exists('C:/xampp/htdocs/oop_dip_pr/public/uploads/' . $nameImg[0]['avatar'])) {
+        if (file_exists('C:/xampp/htdocs/php_components/public/uploads/' . $nameImg[0]['avatar'])) {
             $this->uploads->deleteImg($nameImg[0]['avatar']);
         }
         $this->queryBuilder->deleteByUserId($id, $table['security_media']);

@@ -3,25 +3,18 @@
 namespace App;
 
 use App\QueryBuilder;
-use League\Plates\Engine;
 use Password\Validator;
-use Tamtamchik\SimpleFlash\Flash;
 use App\FlashInfo;
 
 class AuthController
 {
     private $queryBuilder;
-    private $usersController;
     private $validator;
-    private $template;
-    private $validation;
 
-    public function __construct(Engine $template, QueryBuilder $queryBuilder, UsersController $usersController, Validator $validator, Flash $flash) 
+    public function __construct(QueryBuilder $queryBuilder, Validator $validator) 
     {
         $this->queryBuilder = $queryBuilder;
-        $this->usersController = $usersController;
         $this->validator = $validator;
-        $this->template = $template;
     }
 
 

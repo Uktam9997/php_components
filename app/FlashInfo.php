@@ -10,24 +10,11 @@ class FlashInfo
 
     public static function error($error) {
         $_SESSION['error'] = $error;
-        // unset($_SESSION['error']);
-
-    }
-
-
-
-    public static function errorValidation($error = null) {
-        $res = $_SESSION['error_val'] = $error;
-        return $res ? true : false;
-        // unset($_SESSION['error']);
-
     }
 
 
     public static function messenger($messenger) {
         $_SESSION['messenger'] = $messenger;
-        // unset($_SESSION['messenger']);
-
     }
 
 

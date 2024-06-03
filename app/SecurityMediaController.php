@@ -102,8 +102,8 @@ class SecurityMediaController
             header("Location: /users");
             exit;
         }
-
-        if (file_exists('C:/xampp/htdocs/oop_dip_pr/public/uploads/' . $avatar[0]['avatar'])) {
+        
+        if (file_exists('C:/xampp/htdocs/php_components/public/uploads/' . $avatar[0]['avatar'])) {
             $this->uploads->deleteImg($avatar[0]['avatar']);
         }
 

@@ -63,10 +63,6 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
 
     $r->addRoute('GET', '/delete_user/{id:\d+}', ['App\UsersController', 'deleteUser']);
 
-
-
-
-
 });
 
 
