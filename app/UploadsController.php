@@ -27,7 +27,6 @@ class UploadsController
 
 
     public function deleteImg($nameImg) {
-        //C:\xampp\htdocs\oop_dip_pr\public\uploads\664ff42999891.jpg
         if(!unlink('C:/xampp/htdocs/php_components/public/uploads/' . $nameImg)) {
             return false;
         }
