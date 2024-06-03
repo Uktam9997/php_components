@@ -1,3 +1,5 @@
+<?php session_start(); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +14,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <!-- Remove Tap Highlight on Windows Phone IE -->
     <meta name="msapplication-tap-highlight" content="no">
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!-- base css -->
     <link id="vendorsbundle" rel="stylesheet" media="screen, print" href="css/vendors.bundle.css">
     <link id="appbundle" rel="stylesheet" media="screen, print" href="css/app.bundle.css">
@@ -24,6 +28,7 @@
     <link rel="stylesheet" media="screen, print" href="css/fa-brands.css">
 </head>
 <body>
+    <?php //var_dump($_SESSION['error']); ?>
     <div class="page-wrapper auth">
         <div class="page-inner bg-brand-gradient">
             <div class="page-content-wrapper bg-transparent m-0">
@@ -38,7 +43,7 @@
                         <span class="text-white opacity-50 ml-auto mr-2 hidden-sm-down">
                             Уже зарегистрированы?
                         </span>
-                        <a href="/public/views/page_login.php" class="btn-link text-white ml-auto ml-sm-0">
+                        <a href="/page_login" class="btn-link text-white ml-auto ml-sm-0">
                             Войти
                         </a>
                     </div>
@@ -59,9 +64,25 @@
                             </div>
                             <div class="col-xl-6 ml-auto mr-auto">
                                 <div class="card p-4 rounded-plus bg-faded">
-                                    <div class="alert alert-danger text-dark" role="alert">
-                                        <strong>Уведомление!</strong> Этот эл. адрес уже занят другим пользователем.
-                                    </div>
+
+                                    <?php if(!empty($_SESSION['error'])): ?>
+                                        <div class="alert alert-danger text-dark" role="alert">
+                                            <strong>Уведомление!</strong> <?php echo $_SESSION['error']; ?>
+                                        </div>
+                                    <?php unset($_SESSION['error']); endif;?>
+
+                                    <?php if(!empty($_SESSION['error_val'])): ?>
+                                        <div class="alert alert-danger text-dark" role="alert">
+                                            <strong>Уведомление!</strong> <?php echo $_SESSION['error_val']; ?>
+                                        </div>
+                                    <?php unset($_SESSION['error_val']); endif;?>
+
+                                    <?php if(!empty($_SESSION['messenger'])): ?>
+                                        <div class="alert alert-success" role="alert">
+                                            <strong>Уведомление!</strong> <?php echo $_SESSION['messenger']; ?>
+                                        </div>
+                                    <?php unset($_SESSION['messenger']); endif;?>
+
                                     <form id="js-login" novalidate="" action="/register" method="post">
                                         <!-- email -->
                                         <div class="form-group">

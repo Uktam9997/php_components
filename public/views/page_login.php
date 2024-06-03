@@ -1,3 +1,5 @@
+<?php session_start(); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +14,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <!-- Remove Tap Highlight on Windows Phone IE -->
     <meta name="msapplication-tap-highlight" content="no">
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!-- base css -->
     <link id="vendorsbundle" rel="stylesheet" media="screen, print" href="css/vendors.bundle.css">
     <link id="appbundle" rel="stylesheet" media="screen, print" href="css/app.bundle.css">
@@ -33,9 +37,19 @@
             </a>
         </div>
         <div class="card p-4 border-top-left-radius-0 border-top-right-radius-0">
-            <div class="alert alert-success">
-                Регистрация успешна
-            </div>
+            <!-- error -->
+            <?php if(!empty($_SESSION['error'])): ?>
+                <div class="alert alert-danger text-dark" role="alert">
+                    <strong>Уведомление!</strong> <?php echo $_SESSION['error']; ?>
+                </div>
+            <?php unset($_SESSION['error']); endif;?>
+                <!-- messenger -->
+            <?php if(!empty($_SESSION['messenger'])): ?>
+                <div class="alert alert-success" role="alert">
+                    <strong>Уведомление!</strong> <?php echo $_SESSION['messenger']; ?>
+                </div>
+            <?php unset($_SESSION['messenger']); endif;?>
+
             <form action="/login" method="post">
                 <!-- email -->
                 <div class="form-group">
@@ -51,7 +65,7 @@
             </form>
         </div>
         <div class="blankpage-footer text-center">
-            Нет аккаунта? <a href="/public/views/page_register.php"><strong>Зарегистрироваться</strong>
+            Нет аккаунта? <a href="/page_register"><strong>Зарегистрироваться</strong>
         </div>
     </div>
     <video poster="img/backgrounds/clouds.png" id="bgvid" playsinline autoplay muted loop>

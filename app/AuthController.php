@@ -3,14 +3,25 @@
 namespace App;
 
 use App\QueryBuilder;
-
+use League\Plates\Engine;
+use Password\Validator;
+use Tamtamchik\SimpleFlash\Flash;
+use App\FlashInfo;
 
 class AuthController
 {
     private $queryBuilder;
+    private $usersController;
+    private $validator;
+    private $template;
+    private $validation;
 
-    public function __construct(QueryBuilder $queryBuilder) {
+    public function __construct(Engine $template, QueryBuilder $queryBuilder, UsersController $usersController, Validator $validator, Flash $flash) 
+    {
         $this->queryBuilder = $queryBuilder;
+        $this->usersController = $usersController;
+        $this->validator = $validator;
+        $this->template = $template;
     }
 
 
@@ -29,27 +40,34 @@ class AuthController
 
     public function register() {
         $table = 'admin';
+        $validation = $this->validator->setMinLength(4);
+        if(!$validation->isValid($_POST['password'])) {
+            FlashInfo::error('Парол должен содержат минимум 4 символ!');
+            header("Location: /page_register");
+            exit;
+        }
 
         $checkUser = $this->queryBuilder->getUserByEmail($_POST['email'], $table);
         if($checkUser) {
-            $this->page_register();
-            //Flash пол уже сушевстует ...
+            FlashInfo::error('Емаил уже зарегистрирован! попробуйте с другово емаила');
+            header("Location: /page_register");
+            exit;
+            
         }
-        
         $user = [
             'email' => $_POST['email'],
             'password' => password_hash($_POST['password'], PASSWORD_DEFAULT)
         ];
 
-        if($this->queryBuilder->insert($user, $table)) {
-            $this->page_login();
-            //Flash! рег успешно ...
-            exit;
-        } else {
-            $this->page_register();
-            //Flash !!! повторите еще раз ...
+        if(!$this->queryBuilder->insert($user, $table)) {
+            FlashInfo::error('Упс что то пошло не так :( попробуйте еще раз');
+            header("Location: /page_register");
             exit;
         }
+            FlashInfo::messenger('Вы успещно зарегистрировалис :) Можете зохадит.');
+            header("Location: /page_login");
+            exit;
+        
         
     }
 
@@ -61,17 +79,30 @@ class AuthController
 
         $user = $this->queryBuilder->getUserByEmail($email, $table);
         if(!$user) {
-            $this->page_login();
-            //Flash Не правилно лог или пар ...
+            FlashInfo::error('Не верный Емаил');
+            header("Location: /page_login");
+            exit;
         }
 
         $password_verify = password_verify($password, $user[0]['password']);
         if(!$password_verify) {
-            $this->page_login();
-            //Flash Не правилно лог или пар ...
+            FlashInfo::error('Не верный парол');
+            header("Location: /page_login");
+            exit;
         }
-        header('Location:public/views/users.php');
+        foreach($user as $user_info) {
+            FlashInfo::isAuth($user_info['id']);
+            FlashInfo::isAdmin($user_info['is_admin']);
+        }
+        header('Location: /users');
 
+    }
+
+
+
+    public function logaut() {
+        unset($_SESSION['user_id']);
+        header("Location: /page_login");
     }
 
 
